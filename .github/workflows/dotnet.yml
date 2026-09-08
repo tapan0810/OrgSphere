@@ -1,0 +1,20 @@
+name: .NET CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.0.x'
+      - name: Restore
+        run: dotnet restore OrgSphere_backend/OrgSphere/OrgSphere/OrgSphere.csproj
+      - name: Build
+        run: dotnet build OrgSphere_backend/OrgSphere/OrgSphere/OrgSphere.csproj --configuration Release --no-restore
