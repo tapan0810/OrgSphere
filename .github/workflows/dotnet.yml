@@ -5,7 +5,7 @@ on:
   pull_request:
 
 jobs:
-  build:
+  build-and-test:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -14,7 +14,11 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '9.0.x'
-      - name: Restore
+      - name: Restore application
         run: dotnet restore OrgSphere_backend/OrgSphere/OrgSphere/OrgSphere.csproj
-      - name: Build
+      - name: Build application
         run: dotnet build OrgSphere_backend/OrgSphere/OrgSphere/OrgSphere.csproj --configuration Release --no-restore
+      - name: Restore tests
+        run: dotnet restore OrgSphere_backend/OrgSphere/OrgSphere.Tests/OrgSphere.Tests.csproj
+      - name: Run NUnit tests
+        run: dotnet test OrgSphere_backend/OrgSphere/OrgSphere.Tests/OrgSphere.Tests.csproj --configuration Release --no-restore --verbosity normal
